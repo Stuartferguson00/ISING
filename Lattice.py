@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib
 matplotlib.use('TKAgg')
-%matplotlib inline
+#%matplotlib inline
 import sys
 import math
 import random
@@ -21,7 +21,7 @@ from matplotlib.animation import FuncAnimation
     
 class Lattice(object):
 
-    def __init__(self, N, T, dynamics = "Glauber", lattice = None):
+    def __init__(self, N, T, dynamics = "Glauber.py", lattice = None):
         
         self.N = N
         
@@ -33,12 +33,12 @@ class Lattice(object):
         
         self.sweep_size = self.N**2
         
-        if dynamics == "Glauber":
+        if dynamics == "Glauber.py":
             self.dynamics = self.glauber
         elif dynamics == "Kawasaki":
             self.dynamics = self.kawasaki
         else:
-            raise ValueError('The only options for dynamics are "Glauber" or "Kawasaki". Please input either of these')
+            raise ValueError('The only options for dynamics are "Glauber.py" or "Kawasaki". Please input either of these')
         #print(type(lattice))
         
         if type(lattice) == np.ndarray:#'numpy.ndarray':
@@ -130,20 +130,12 @@ class Lattice(object):
             
         
         #if nearest neighbours
-        elif abs(np.sum(flip_coords_1-flip_coords_2)) ==1 and abs(np.sum(flip_coords_1[0]-flip_coords_2[0])) <=1 and abs(np.sum(flip_coords_1[1]-flip_coords_2[1])) <=1:
+        elif abs(np.sum(flip_coords_1-flip_coords_2)):
             #print("this loop is wronga nd you havent fixed it yet")
-
-            self.NN_count +=1
-
-
-            #print(flip_coords_1)
-            #print(flip_coords_2)
-
+            
             E_init_1 = self.compute_E(flip_coords_1)
             E_init_2 = self.compute_E(flip_coords_2)
-            #delta_E_short = -1*(2*E_init_1+2*E_init_2-4)
-
-            delta_E = (-2*E_init_1-2*E_init_2)+4
+            delta_E = -1*(2*E_init_1+2*E_init_2-4)
             
         
         else:
@@ -271,7 +263,7 @@ class Lattice(object):
         #    for j in range(self.N):
         #        f.write('%d %d %lf\n'%(i,j,self.lattice[i,j]))
         #f.close()
-       
+        print("hiii")
         plt.cla()
         plt.imshow(self.lattice, animated=True)
         #plt.show()

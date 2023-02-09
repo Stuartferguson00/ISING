@@ -2,8 +2,8 @@ import time
 import numpy as np 
 from matplotlib import pyplot as plt
 import matplotlib
-matplotlib.use('TKAgg')
-%matplotlib inline
+#matplotlib.use('TKAgg')
+#%matplotlib inline
 import sys
 import math
 import random
@@ -14,15 +14,16 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+from Lattice import Lattice
+matplotlib.use("module://backend_interagg")
 
-    
-def run_full_glauber():
+def run_full_kawisaki():
     #
     N = 10
     
-    #T_arr = np.arange(1,3.1,0.1)
-    T_arr = [2.2, 2.25, 2.3]
-    T_arr = [2,2.26]
+    T_arr = np.arange(1,3.1,0.3)
+    #T_arr = [2.2, 2.25, 2.3]
+    #T_arr = [1,2,2.26]
     wait_sweeps = 100
     num_tot_sweeps = 1000
     
@@ -36,12 +37,12 @@ def run_full_glauber():
         start = time.time()
         
         if T == 1:
-            L = Lattice(N,T, dynamics = "Glauber", lattice = "ground")#np.ones((N,N)))
+            L = Lattice(N,T, dynamics = "Kawasaki", lattice = "halved")#np.ones((N,N)))
         else:
             if count !=0:
-                L = Lattice(N,T, dynamics = "Glauber", lattice = lattices[-1].lattice)#np.ones((N,N)))
+                L = Lattice(N,T, dynamics = "Kawasaki", lattice = lattices[-1].lattice)#np.ones((N,N)))
             else:
-                L = Lattice(N,T, dynamics = "Glauber", lattice = "uniform")#np.ones((N,N)))
+                L = Lattice(N,T, dynamics = "Kawasaki", lattice = "uniform")#np.ones((N,N)))
         L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_tot_sweeps , plot_anim = False, find_M = True)
         
 
@@ -99,15 +100,15 @@ def run_full_glauber():
         M_list.append(np.mean(L.magnetisation))
         E_list.append(np.mean(L.energies))
         hc_list.append(L.find_heat_capacity())
-        #hc_err_list.append(L.jacknife_c())
+        hc_err_list.append(L.jacknife_c())
         M_all_list.append(L.magnetisation)
         E_all_list.append(L.energies)
         susc_list.append(L.susceptibility())
     
     
-    #np.savetxt("G_results/ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list)))#, delimiter = ",")
-    #np.savetxt("G_results/M_ALL",M_all_list)#, delimiter = ",")
-    #np.savetxt("G_results/E_ALL",E_all_list)#, delimiter = ",")
+    np.savetxt("G_results/KAW_ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list)))#, delimiter = ",")
+    np.savetxt("G_results/KAW_M_ALL",M_all_list)#, delimiter = ",")
+    np.savetxt("G_results/KAW_E_ALL",E_all_list)#, delimiter = ",")
     
     
         
@@ -137,7 +138,7 @@ def run_full_glauber():
 
         
     plt.show()
-    plt.title("Magnetisation against temperature for Glauber")
+    plt.title("Magnetisation against temperature for Kawisaki")
     plt.ylabel("Magnetisation")
     plt.xlabel("Temperature")
     plt.plot(T_arr, M_list)
@@ -147,7 +148,7 @@ def run_full_glauber():
     
     
     
-    plt.title("Total Energy against temperature for Glauber")
+    plt.title("Total Energy against temperature for Kawisaki")
     plt.ylabel("Total Energy")
     plt.xlabel("Temperature")
     plt.plot(T_arr, E_list)
@@ -157,17 +158,17 @@ def run_full_glauber():
     
     
     
-    plt.title("Heat capacity against temperature for Glauber")
+    plt.title("Heat capacity against temperature for Kawisaki")
     plt.ylabel("Heat Capacity")
     plt.xlabel("Temperature")
-    plt.plot(T_arr, hc_list)
-    #plt.errorbar(T_arr, hc_list,yerr = hc_err_list)
+    #plt.plot(T_arr, hc_list)
+    plt.errorbar(T_arr, hc_list,yerr = hc_err_list)
     plt.show()
     
     
 
     
-    plt.title("Susceptability against temperature for Glauber")
+    plt.title("Susceptability against temperature for Kawisaki")
     plt.ylabel("Susceptability")
     plt.xlabel("Temperature")
     plt.plot(T_arr, susc_list)
@@ -183,6 +184,12 @@ def run_full_glauber():
     #print(susc_list)
     #print(hc_list)
     return lattices
-    
-    
-lattice_list = run_full_glauber()
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+lattice_list = run_full_kawisaki()
