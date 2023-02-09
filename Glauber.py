@@ -34,38 +34,43 @@ def main(T_low, N, num_sweeps, plot_anim = False, T_high = None, stepsize = None
 
     """
 
+
+
     if T_high is not None and stepsize is not None:
+        # make required range
         T_arr = np.arange(T_low, T_high, stepsize)
 
     if T_high is None or stepsize is None:
+        #range isnt required
         T_arr = np.asarray([int(T_low)])
 
 
 
-
+    #define how many wait sweeps to do. Generally 100 was seen to be appropriate,
+    #however if for some reason less total sweeps than this are required, it adjusts
     wait_sweeps = 100
 
     if wait_sweeps >= num_sweeps:
         wait_sweeps = num_sweeps//10
 
-
-    
-
+    # loop through temperatures
     lattices = []
     for count, T in enumerate(T_arr):
-        start = time.time()
-        
+
+        # if temperature = 1, assume ground state
         if T == 1:
             L = Lattice(N,T, dynamics = "Glauber", lattice = "ground")#np.ones((N,N)))
         else:
+            # use starting lattice from end of last lattice if not first loop
             if count !=0:
                 L = Lattice(N,T, dynamics = "Glauber", lattice = lattices[-1].lattice)#np.ones((N,N)))
+            # if first loop assume uniform distribution
             else:
                 L = Lattice(N,T, dynamics = "Glauber", lattice = "uniform")#np.ones((N,N)))
 
-        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_sweeps , plot_anim = plot_anim, find_M = True)
-        
+        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_sweeps , plot_anim = plot_anim)
 
+        #run simulation
         lattices.append(L)
         
 
@@ -100,73 +105,6 @@ def main(T_low, N, num_sweeps, plot_anim = False, T_high = None, stepsize = None
     np.savetxt("G_results/GLA_ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list, hc_err_list)))#, delimiter = ",")
     #np.savetxt("G_results/GLA_M_ALL",M_all_list)#, delimiter = ",")
     #np.savetxt("G_results/GLA_E_ALL",E_all_list)#, delimiter = ",")
-    
-    
-    """
-    plt.title("Magnetisation")
-    plt.ylabel("Magnetisation")
-    plt.xlabel("Sweeps")
-    for L in lattices:
-        plt.plot(L.sweep_list,abs(np.array(L.magnetisation)), label = L.T)
-    plt.legend()
-    plt.show()
-    
-    
-    
-    
-    plt.title("Total energy")
-    plt.ylabel("Energy")
-    plt.xlabel("Sweeps")
-    for L in lattices:
-        plt.plot(L.sweep_list,L.energies, label = L.T)
-    plt.legend()
-    plt.show()
-    """
-        
-        
-        
-        
-        
-    """
-        
-    plt.show()
-    plt.title("Magnetisation against temperature for Glauber")
-    plt.ylabel("Magnetisation")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, M_list)
-    plt.show()
-    
-    
-    
-    
-    
-    plt.title("Total Energy against temperature for Glauber")
-    plt.ylabel("Total Energy")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, E_list)
-    plt.show()
-    
-    
-    
-    
-    
-    plt.title("Heat capacity against temperature for Glauber")
-    plt.ylabel("Heat Capacity")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, hc_list)
-    #plt.errorbar(T_arr, hc_list,yerr = hc_err_list)
-    plt.show()
-    
-    
-
-    
-    plt.title("Susceptability against temperature for Glauber")
-    plt.ylabel("Susceptability")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, susc_list)
-    plt.show()
-    
-    """
 
     return
     

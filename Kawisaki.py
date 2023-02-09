@@ -33,50 +33,48 @@ def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, ste
 
     """
 
-
+    #check if a range or T are to be evaluated
     if T_high is not None and stepsize is not None:
-        print("helloo")
+        #nte that a range isnt wanted, to be used later
+        rang = True
+        #make required range
         T_arr = np.arange(T_low, T_high, stepsize)
 
     if T_high is None or stepsize is None:
-        print("hiiiii")
+        #range isnt required
+        rang = False
         T_arr = np.asarray([int(T_low)])
 
-    print(T_arr)
 
 
 
+    #define how many wait sweeps to do. Generally 100 was seen to be appropriate,
+    #however if for some reason less total sweeps than this are required, it adjusts
     wait_sweeps = 100
-
     if wait_sweeps >= num_sweeps:
         wait_sweeps = num_sweeps//10
     
-
+    #loop through temperatures
     lattices = []
     for count, T in enumerate(T_arr):
-        start = time.time()
-        print(T)
+
+        #if temperature = 1, assume ground state
         if T == 1:
-            L = Lattice(N,T, dynamics = "Kawasaki", lattice = "halved")#np.ones((N,N)))
+            L = Lattice(N,T, dynamics = "Kawasaki", lattice = "halved")
         else:
+            #use starting lattice from end of last lattice if not first loop
             if count !=0:
-                L = Lattice(N,T, dynamics = "Kawasaki", lattice = lattices[-1].lattice)#np.ones((N,N)))
+                L = Lattice(N,T, dynamics = "Kawasaki", lattice = lattices[-1].lattice)
+            #if first loop assume uniform distribution
             else:
-                L = Lattice(N,T, dynamics = "Kawasaki", lattice = "uniform")#np.ones((N,N)))
-        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_sweeps , plot_anim = False, find_M = True)
-        
+                L = Lattice(N,T, dynamics = "Kawasaki", lattice = "uniform")
 
+        #run simulation
+        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_sweeps , plot_anim = plot_anim)
         
-
         lattices.append(L)
         
 
-
-        end = time.time()
-        print("time taken for one T: "+ str(start-end))
-        
-
-    
     
     
     susc_list = []
@@ -103,81 +101,7 @@ def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, ste
     #np.savetxt("G_results/KAW_E_ALL",E_all_list)#, delimiter = ",")
     
     
-    """
-    plt.title("Magnetisation")
-    plt.ylabel("Magnetisation")
-    plt.xlabel("Sweeps")
-    for L in lattices:
-        plt.plot(L.sweep_list,abs(np.array(L.magnetisation)), label = L.T)
-    plt.legend()
-    plt.show()
-    
-    
-    
-    
-    plt.title("Total energy")
-    plt.ylabel("Energy")
-    plt.xlabel("Sweeps")
-    for L in lattices:
-        plt.plot(L.sweep_list,L.energies, label = L.T)
-    plt.legend()
-    plt.show()
-    """
-        
-        
-        
-        
-        
 
-    """
-    plt.show()
-    plt.title("Magnetisation against temperature for Kawisaki")
-    plt.ylabel("Magnetisation")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, M_list)
-    plt.show()
-    
-    
-    
-    
-    
-    plt.title("Total Energy against temperature for Kawisaki")
-    plt.ylabel("Total Energy")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, E_list)
-    plt.show()
-    
-    
-    
-    
-    
-    
-    plt.title("Heat capacity against temperature for Kawisaki")
-    plt.ylabel("Heat Capacity")
-    plt.xlabel("Temperature")
-    #plt.plot(T_arr, hc_list)
-    plt.errorbar(T_arr, hc_list,yerr = hc_err_list)
-    plt.show()
-    
-    
-
-    
-    plt.title("Susceptability against temperature for Kawisaki")
-    plt.ylabel("Susceptability")
-    plt.xlabel("Temperature")
-    plt.plot(T_arr, susc_list)
-    plt.show()
-    
-    
-    
-    
-    plt.title("")
-    plt.ylabel("")
-    plt.xlabel("")
-    
-    #print(susc_list)
-    #print(hc_list)
-    """
     return
   
  
@@ -193,7 +117,11 @@ def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, ste
 
 if __name__ == "__main__":
 
-    #if incorrect umbe rof arguments are given, state what arguments are expected for which process
+
+
+
+
+    #if incorrect number of arguments are given, state what arguments are expected for which process
     if len(sys.argv) != 7 and len(sys.argv) != 5:
         print(len(sys.argv))
         print("Usage for a single T: \n T, N, num_sweeps, plot_anim")
