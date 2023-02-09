@@ -15,23 +15,30 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-matplotlib.use("module://backend_interagg")
+#matplotlib.use("module://backend_interagg")
     
-def run_full_glauber():
-    #
-    N = 5
+def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, stepsize = None):
+    print(plot_anim)
+    if T_high is not None and stepsize is not None:
+        print("helloo")
+        T_arr = np.arange(T_low, T_high, stepsize)
 
-    #T_arr = np.arange(1,3.1,0.1)
-    T_arr = [2.2, 2.25, 2.3]
-    T_arr = [2,2.26]
+    if T_high is None or stepsize is None:
+        print("hiiiii")
+        T_arr = np.asarray([int(T_low)])
+
+    print(T_arr)
+
+
+
     wait_sweeps = 100
-    num_tot_sweeps = 1000
+
+    if wait_sweeps >= num_sweeps:
+        wait_sweeps = num_sweeps//10
+
+
     
-    #T_arr = [1,3]
-    #susc_list = []
-    #hc_list = []
-    #M_list = []
-    #E_list = []
+
     lattices = []
     for count, T in enumerate(T_arr):
         start = time.time()
@@ -43,44 +50,18 @@ def run_full_glauber():
                 L = Lattice(N,T, dynamics = "Glauber", lattice = lattices[-1].lattice)#np.ones((N,N)))
             else:
                 L = Lattice(N,T, dynamics = "Glauber", lattice = "uniform")#np.ones((N,N)))
-        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_tot_sweeps , plot_anim = False, find_M = True)
+
+        L.run(wait_sweeps = wait_sweeps , num_tot_sweeps = num_sweeps , plot_anim = plot_anim, find_M = True)
         
 
-        
-
-        
-        
-        
-
-        
-        
-        
-        #L.plot_M()
-        #L.plot_E()
         lattices.append(L)
         
-        #M_list.append(np.mean(L.magnetisation))
-        #E_list.append(np.mean(E.magnetisation))
-        #hc_list.append(L.find_heat_capacity())
-        #susc_list.append(L.susceptibility())
-        
-        #L = Lattice(50,T, dynamics = "Kawasaki")
 
-        #L.run(wait_sweeps = 0, num_tot_sweeps = 100, plot_anim = True, find_M = False)
-        
 
         end = time.time()
         print("time taken for one T: "+ str(start-end))
         
-    #save to file iteritively not like this
-    #np.savetxt("G_results/G_E_all",[np.mean(L.energies)])#, delimiter = ",")
-    #np.savetxt("G_results/G_M_all",[np.mean(L.magnetisation)])#, delimiter = ",")
-    #np.savetxt("G_results/G_S_all",[L.susceptibility()])#, delimiter = ",")
-    #np.savetxt("G_results/G_HC_all", [L.find_heat_capacity()])#, delimiter = ",")
 
-    
-    
-    
     
     
     
@@ -91,8 +72,6 @@ def run_full_glauber():
     E_list = []
     M_all_list = []
     E_all_list = []
-    
-    #susc_err_list = []
     hc_err_list = []
 
         
@@ -100,18 +79,18 @@ def run_full_glauber():
         M_list.append(np.mean(L.magnetisation))
         E_list.append(np.mean(L.energies))
         hc_list.append(L.find_heat_capacity())
-        #hc_err_list.append(L.jacknife_c())
+        hc_err_list.append(L.jacknife_c())
         M_all_list.append(L.magnetisation)
         E_all_list.append(L.energies)
         susc_list.append(L.susceptibility())
     
     
-    #np.savetxt("G_results/ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list)))#, delimiter = ",")
-    #np.savetxt("G_results/M_ALL",M_all_list)#, delimiter = ",")
-    #np.savetxt("G_results/E_ALL",E_all_list)#, delimiter = ",")
+    np.savetxt("G_results/GLA_ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list, hc_err_list)))#, delimiter = ",")
+    #np.savetxt("G_results/GLA_M_ALL",M_all_list)#, delimiter = ",")
+    #np.savetxt("G_results/GLA_E_ALL",E_all_list)#, delimiter = ",")
     
     
-        
+    """
     plt.title("Magnetisation")
     plt.ylabel("Magnetisation")
     plt.xlabel("Sweeps")
@@ -130,12 +109,13 @@ def run_full_glauber():
         plt.plot(L.sweep_list,L.energies, label = L.T)
     plt.legend()
     plt.show()
+    """
         
         
         
         
         
-
+    """
         
     plt.show()
     plt.title("Magnetisation against temperature for Glauber")
@@ -174,16 +154,27 @@ def run_full_glauber():
     plt.plot(T_arr, susc_list)
     plt.show()
     
+    """
+
+    return
     
-    
-    
-    plt.title("")
-    plt.ylabel("")
-    plt.xlabel("")
-    
-    #print(susc_list)
-    #print(hc_list)
-    return lattices
-    
-    
-lattice_list = run_full_glauber()
+
+
+
+if __name__ == "__main__":
+
+    #if incorrect umbe rof arguments are given, state what arguments are expected for which process
+    if len(sys.argv) != 7 and len(sys.argv) != 5:
+        print(len(sys.argv))
+        print("Usage for a single T: \n T, N, num_sweeps, plot_anim")
+        print("Usage for a range of T: \n T_low, N, num_sweeps, plot_anim, T_high, stepsize")
+        sys.exit(1)
+
+    #if only one Temperature is to be evaluated
+    elif len(sys.argv) == 5:
+        main(float(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), eval(sys.argv[4]))
+    #if a range of temperatures re to be evaluated
+    elif len(sys.argv) == 7:
+        main(float(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), eval(sys.argv[4]), float(sys.argv[5]), float(sys.argv[6]))
+
+

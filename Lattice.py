@@ -21,7 +21,7 @@ from matplotlib.animation import FuncAnimation
     
 class Lattice(object):
 
-    def __init__(self, N, T, dynamics = "Glauber.py", lattice = None):
+    def __init__(self, N, T, dynamics = "Glauber", lattice = None):
         
         self.N = N
         
@@ -33,12 +33,12 @@ class Lattice(object):
         
         self.sweep_size = self.N**2
         
-        if dynamics == "Glauber.py":
+        if dynamics == "Glauber":
             self.dynamics = self.glauber
         elif dynamics == "Kawasaki":
             self.dynamics = self.kawasaki
         else:
-            raise ValueError('The only options for dynamics are "Glauber.py" or "Kawasaki". Please input either of these')
+            raise ValueError('The only options for dynamics are "Glauber" or "Kawasaki". Please input either of these')
         #print(type(lattice))
         
         if type(lattice) == np.ndarray:#'numpy.ndarray':
@@ -127,16 +127,21 @@ class Lattice(object):
         #if lattice values are identical
         if self.lattice[flip_coords_1[0],flip_coords_1[1]] == self.lattice[flip_coords_2[0],flip_coords_2[1]]:
             return
-            
-        
+
         #if nearest neighbours
-        elif abs(np.sum(flip_coords_1-flip_coords_2)):
-            #print("this loop is wronga nd you havent fixed it yet")
-            
+        elif abs(np.sum(flip_coords_1 - flip_coords_2)) == 1 and abs(
+                np.sum(flip_coords_1[0] - flip_coords_2[0])) <= 1 and abs(
+                np.sum(flip_coords_1[1] - flip_coords_2[1])) <= 1:
+
+
+
             E_init_1 = self.compute_E(flip_coords_1)
             E_init_2 = self.compute_E(flip_coords_2)
-            delta_E = -1*(2*E_init_1+2*E_init_2-4)
-            
+
+
+            delta_E = (-2 * E_init_1 - 2 * E_init_2) + 4
+
+
         
         else:
             #not sure if there is a more efficient way to compute this....
@@ -270,12 +275,12 @@ class Lattice(object):
         #    for j in range(self.N):
         #        f.write('%d %d %lf\n'%(i,j,self.lattice[i,j]))
         #f.close()
-        print("hiii")
+        #print("hiii")
         plt.cla()
         plt.imshow(self.lattice, animated=True)
         #plt.show()
         plt.draw()
-        plt.pause(0.1)
+        plt.pause(0.01)
         
         
         
@@ -297,8 +302,7 @@ class Lattice(object):
             #self.N**2 is the required length of time between visualisations as in the lecture notes
             if i%self.sweep_size == 0:
                 #print(self.spin())
-                if plot_anim:
-                    self.plot_lattice()
+
                     
                 if i%(self.sweep_size*10) == 0 and i > wait_sweeps*self.sweep_size:
                     if find_M:
@@ -306,6 +310,8 @@ class Lattice(object):
                         self.find_magnetisation()
                         #self.find_magnetisation_squared()
                         self.compute_tot_E()
+                    if plot_anim:
+                        self.plot_lattice()
                 if i%(self.sweep_size*100) == 0:
                     print(i/self.sweep_size)
                     
