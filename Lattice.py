@@ -190,6 +190,8 @@ class Lattice(object):
         
         
     def rand_flip_coords(self):
+
+        #randint is evry slow
         r = int(self.N * random.random())
         r_2 = int(self.N * random.random())
         # return np.random.randint(0,self.N,2)

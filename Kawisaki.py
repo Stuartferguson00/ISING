@@ -19,13 +19,13 @@ matplotlib.use("module://backend_interagg")
 
 def run_full_kawisaki():
     #
-    N = 10
-    
-    T_arr = np.arange(1,3.1,0.3)
+    N = 50
+
+    T_arr = np.arange(1,3.1,0.1)
     #T_arr = [2.2, 2.25, 2.3]
     #T_arr = [1,2,2.26]
     wait_sweeps = 100
-    num_tot_sweeps = 1000
+    num_tot_sweeps = 10000
     
     #T_arr = [1,3]
     #susc_list = []
@@ -35,7 +35,7 @@ def run_full_kawisaki():
     lattices = []
     for count, T in enumerate(T_arr):
         start = time.time()
-        
+        print(T)
         if T == 1:
             L = Lattice(N,T, dynamics = "Kawasaki", lattice = "halved")#np.ones((N,N)))
         else:
