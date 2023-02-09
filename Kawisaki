@@ -1,9 +1,10 @@
 import time
+
 import numpy as np 
 from matplotlib import pyplot as plt
 import matplotlib
 matplotlib.use('TKAgg')
-%matplotlib inline
+#%matplotlib inline
 import sys
 import math
 import random
@@ -18,9 +19,9 @@ from matplotlib.animation import FuncAnimation
 
 def run_full_kawisaki():
     #
-    N = 50
+    N = 100
     
-    T_arr = np.arange(1,3.1,0.1)
+    T_arr = np.arange(1,3.1,0.3)
     #T_arr = [2.2, 2.25, 2.3]
     #T_arr = [1,2,2.26]
     wait_sweeps = 100

@@ -130,12 +130,20 @@ class Lattice(object):
             
         
         #if nearest neighbours
-        elif abs(np.sum(flip_coords_1-flip_coords_2)):
+        elif abs(np.sum(flip_coords_1-flip_coords_2)) ==1 and abs(np.sum(flip_coords_1[0]-flip_coords_2[0])) <=1 and abs(np.sum(flip_coords_1[1]-flip_coords_2[1])) <=1:
             #print("this loop is wronga nd you havent fixed it yet")
-            
+
+            self.NN_count +=1
+
+
+            #print(flip_coords_1)
+            #print(flip_coords_2)
+
             E_init_1 = self.compute_E(flip_coords_1)
             E_init_2 = self.compute_E(flip_coords_2)
-            delta_E = -1*(2*E_init_1+2*E_init_2-4)
+            #delta_E_short = -1*(2*E_init_1+2*E_init_2-4)
+
+            delta_E = (-2*E_init_1-2*E_init_2)+4
             
         
         else:
