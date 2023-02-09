@@ -190,7 +190,12 @@ class Lattice(object):
         
         
     def rand_flip_coords(self):
-        return np.random.randint(0,self.N,2)
+        r = int(self.N * random.random())
+        r_2 = int(self.N * random.random())
+        # return np.random.randint(0,self.N,2)
+        return np.asarray([r, r_2])
+
+
     
     def compute_tot_E(self, return_val = False):
         E_list = []
