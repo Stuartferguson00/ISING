@@ -1,33 +1,45 @@
 from Lattice import Lattice
 import time
-import numpy as np 
-from matplotlib import pyplot as plt
-import matplotlib
-#matplotlib.use('TKAgg')
-#%matplotlib inline
 import sys
-import math
-import random
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 #matplotlib.use("module://backend_interagg")
     
-def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, stepsize = None):
-    print(plot_anim)
+def main(T_low, N, num_sweeps, plot_anim = False, T_high = None, stepsize = None):
+    """
+    Function to run Glauber dynamics on an ising lattice.
+
+    Saves results to file named "GLA_ALL" where each column is an ising lattice evaluated at a different temperature, and
+    each row is as follows: T  M  E  c  Chi  c_err
+
+
+    Parameters
+    ----------
+    T_low : float
+        Temperature to evaluate ising lattice. Lowest value of a range of values if T_high and stepsize are provided.
+    N: int
+        Size of lattice. Assumes square NxN lattice.
+    num_sweeps: int
+        total number of sweeps required in the simulation.
+    plot_anim: bool
+        Whether animation should be plotted every 10 sweeps or not.
+    T_high: float
+        Upper bound of temperature to evaluate if a range of temperatures are to be evaluated
+    stepsize: int
+        stepsize between temperatures if a range of temperatures are to be evaluated
+
+    Returns
+    -------
+
+
+    """
+
     if T_high is not None and stepsize is not None:
-        print("helloo")
         T_arr = np.arange(T_low, T_high, stepsize)
 
     if T_high is None or stepsize is None:
-        print("hiiiii")
         T_arr = np.asarray([int(T_low)])
 
-    print(T_arr)
 
 
 
@@ -83,7 +95,7 @@ def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, ste
         M_all_list.append(L.magnetisation)
         E_all_list.append(L.energies)
         susc_list.append(L.susceptibility())
-    
+
     
     np.savetxt("G_results/GLA_ALL",np.vstack((T_arr,M_list,E_list,hc_list,susc_list, hc_err_list)))#, delimiter = ",")
     #np.savetxt("G_results/GLA_M_ALL",M_all_list)#, delimiter = ",")

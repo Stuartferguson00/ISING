@@ -1,24 +1,38 @@
 import time
-import numpy as np 
-from matplotlib import pyplot as plt
-import matplotlib
-#matplotlib.use('TKAgg')
-#%matplotlib inline
 import sys
-import math
-import random
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-
 from Lattice import Lattice
-#matplotlib.use("module://backend_interagg")
 
 
 def main(T_low, N = 50, num_sweeps = 1000, plot_anim = False, T_high = None, stepsize = None):
+    """
+    Function to run Kawasaki dynamics on an ising lattice.
+
+    Saves results to file named "KAW_ALL" where each column is an ising lattice evaluated at a different temperature, and
+    each row is as follows: T  M  E  c  Chi  c_err
+
+
+    Parameters
+    ----------
+    T_low : float
+        Temperature to evaluate ising lattice. Lowest value of a range of values if T_high and stepsize are provided.
+    N: int
+        Size of lattice. Assumes square NxN lattice.
+    num_sweeps: int
+        total number of sweeps required in the simulation.
+    plot_anim: bool
+        Whether animation should be plotted every 10 sweeps or not.
+    T_high: float
+        Upper bound of temperature to evaluate if a range of temperatures are to be evaluated
+    stepsize: int
+        stepsize between temperatures if a range of temperatures are to be evaluated
+
+    Returns
+    -------
+
+
+    """
+
 
     if T_high is not None and stepsize is not None:
         print("helloo")

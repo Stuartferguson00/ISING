@@ -1,17 +1,7 @@
-import numpy as np 
-from matplotlib import pyplot as plt
-import matplotlib
-matplotlib.use('TKAgg')
-#%matplotlib inline
-import sys
-import math
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 
 
