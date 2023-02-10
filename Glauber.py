@@ -74,9 +74,6 @@ def main(T_low, N, num_sweeps, plot_anim = False, T_high = None, stepsize = None
         lattices.append(L)
         
 
-
-        end = time.time()
-        print("time taken for one T: "+ str(start-end))
         
 
     
