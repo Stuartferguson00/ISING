@@ -65,6 +65,11 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
 
 
+
+
+    #PLOTTING ENERGY -----------------------------------------------------------
+
+
     def sigmoid_function(T, T_c, a, b, k):
         y = a / (1 + np.exp(-k * (T - T_c))) + b  # L / (1 + np.exp(-k*(x-x0))) + b
         return y
@@ -74,7 +79,7 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
     popt, pcov = scipy.optimize.curve_fit(sigmoid_function, GLA_T_arr, GLA_E_arr, p_0, method='dogbox')
 
-    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color = "b", label = "Glauber sigmoid fit")
+    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color = "b", label = "Glauber sigmoid fit", alpha = 0.4)
     plt.plot(GLA_T_arr, GLA_E_arr, marker = "x", linewidth = 0, color = "b", label = "Glauber im results")
 
 
@@ -83,15 +88,23 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
     popt, pcov = scipy.optimize.curve_fit(sigmoid_function, KAW_T_arr, KAW_E_arr, p_0, method='dogbox')
 
-    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color = "coral", label = "Kawasaki sigmoid fit")
+    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color = "coral", label = "Kawasaki sigmoid fit", alpha = 0.4)
     plt.plot(KAW_T_arr, KAW_E_arr, marker = "x", linewidth = 0, color = "coral", label = "Kawasaki results")
 
     print("Critical temperature as estimated by Kawasaki energy: "+str(round(popt[0],2))+"+/-"+str(np.round(np.sqrt(np.diag(pcov))[0],3)))
     plt.title("Total Energy against temperature")
     plt.ylabel("Total Energy")
-    plt.xlabel("Temperature")
+    plt.xlabel("Temperature (K)")
     plt.legend()
     plt.show()
+
+
+
+
+
+
+    #PLOTTING MAGNETISATION -----------------------------------------------------------
+
 
 
 
@@ -102,13 +115,13 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
     popt, pcov = scipy.optimize.curve_fit(sigmoid_function, GLA_T_arr, GLA_M_arr, p_0, method='dogbox')
 
-    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color="b", label="Glauber sigmoid fit")
+    plt.plot(x_, sigmoid_function(x_, popt[0], popt[1], popt[2], popt[3]), color="b", label="Glauber sigmoid fit", alpha = 0.4)
 
 
 
     plt.title("Magnetisation against temperature")
     plt.ylabel("Magnetisation")
-    plt.xlabel("Temperature")
+    plt.xlabel("Temperature (K)")
     plt.plot(KAW_T_arr, KAW_M_arr, color = "coral", label="Glauber")
     plt.plot(GLA_T_arr, GLA_M_arr, "bx", label = "Glauber")
     plt.text(1, 0, "Note that the fit does not approximate \n"
@@ -124,6 +137,15 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
         np.round(np.sqrt(np.diag(pcov))[0], 3)))
 
 
+
+
+
+
+
+
+
+
+    #PLOTTING HEAT CAPACITY -----------------------------------------------------------
 
 
     def students_t(x, mu, sigma, df, A):
@@ -146,7 +168,7 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
     #p0 = [0,0,0,0]
     p0 = [np.mean(GLA_T_arr), np.std(GLA_T_arr), 1, np.max(GLA_hc_arr) - np.min(GLA_hc_arr)]
     popt, pcov = scipy.optimize.curve_fit(students_t, GLA_T_arr, GLA_hc_arr, p0=p0, method = "dogbox")
-    plt.plot(x_,students_t(x_, popt[0],popt[1],popt[2],popt[3]), color = "b", label = "Glauber students_t fit")
+    plt.plot(x_,students_t(x_, popt[0],popt[1],popt[2],popt[3]), color = "b", label = "Glauber students_t fit", alpha = 0.4)
 
 
     #print("Note that the fit does not necessarily approximate the distribution, it is a very crude way to "
@@ -156,9 +178,9 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
     plt.title("Heat capacity against temperature")
     plt.ylabel("Heat Capacity")
-    plt.xlabel("Temperature")
+    plt.xlabel("Temperature (K)")
     #plt.plot(GLA_T_arr, GLA_hc_arr, label = "Glauber")
-    plt.errorbar(GLA_T_arr, GLA_hc_arr, yerr=GLA_hc_err_arr, marker = "x", linewidth = 0, color = "b", label="Glauber simulation")
+    plt.errorbar(GLA_T_arr, GLA_hc_arr, yerr=GLA_hc_err_arr,  marker = "x",  color = "b", label="Glauber simulation")
     #plt.plot(KAW_T_arr, KAW_hc_arr, label = "Kawasaki")
 
 
@@ -169,7 +191,7 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
     p0 = [np.mean(KAW_T_arr), np.std(KAW_T_arr), 1, np.max(KAW_hc_arr) - np.min(KAW_hc_arr)]
     popt, pcov = scipy.optimize.curve_fit(students_t, KAW_T_arr, KAW_hc_arr, p0=p0, method = "dogbox")
-    plt.plot(x_,students_t(x_, popt[0],popt[1],popt[2],popt[3]), color = "coral", label = "Kawasaki students_t fit")
+    plt.plot(x_,students_t(x_, popt[0],popt[1],popt[2],popt[3]), color = "coral", label = "Kawasaki students_t fit", alpha = 0.4)
 
 
     #print("Note that the fit does not necessarily approximate the distribution, it is a very crude way to "
@@ -180,7 +202,7 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
 
 
 
-    plt.errorbar(KAW_T_arr, KAW_hc_arr, yerr = KAW_hc_err_arr, marker = "x", linewidth = 0,color = "coral",label = "Kawasaki simulation")
+    plt.errorbar(KAW_T_arr, KAW_hc_arr, yerr = KAW_hc_err_arr, marker = "x", color = "coral",label = "Kawasaki simulation")
 
     plt.text(1.8, 0, "Note that the fit does not approximate \n"
                    "the distribution, it is merely a crude \n"
@@ -189,13 +211,17 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
     plt.show()
 
 
+    #PLOTTING SUSC -----------------------------------------------------------
+
+
+
 
 
     plt.title("Susceptability against temperature")
     plt.ylabel("Susceptability")
-    plt.xlabel("Temperature")
-    plt.plot(GLA_T_arr, GLA_susc_arr, label = "Glauber")
-    plt.plot(KAW_T_arr, KAW_susc_arr, label = "Kawasaki")
+    plt.xlabel("Temperature (K)")
+    plt.plot(GLA_T_arr, GLA_susc_arr, color = "b", label = "Glauber")
+    plt.plot(KAW_T_arr, KAW_susc_arr, color = "coral",  label = "Kawasaki")
     plt.legend()
     plt.show()
 
