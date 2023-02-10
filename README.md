@@ -12,6 +12,22 @@ Visualisation is also optional, chosen through a commandline argument. It is nor
 
 Results are saved to respective files "GLA_ALL" for glauber and "KAW_ALL" for Kawasaki, with the form of the document being a seperate column for each temperature evaluated, thus rows are ordered Temperature, Magnetisation, Energy, Heat capacity, Susceptability, error in heat capactity.
 
+Example usage from temrinal:
+To run Kawisaki at T = 1, N = 50, 10000 total sweeps, no animation
+
+>python3 Kawisaki.py, 1, 50, 10000, False
+
+
+To run Kawisaki at T_low = 1, N = 50, 10000 total sweeps, no animation, T_high = 3 and stepsize = 0.1 (ie a range of Temperatures between 1 and 3 at 0.1 intervals will be evaluated)
+
+> python3 Kawisaki.py, 1, 50, 10000, False, 3, 0.1
+
+
+The same could be done with Glauber.py
+
+
+To ru  analysis of Glauber and Kawisaki simulation where the results are stored in "GLA_ALL" and "KAW_ALL" in a seperate directory names "G_results" as they are currently:
+> python3 analysis.py, "GLA_ALL", "KAW_ALL"    
 
 
 # Analysing results
