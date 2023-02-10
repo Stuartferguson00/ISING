@@ -122,7 +122,7 @@ def main(GLA_ALL = "GLA_ALL", KAW_ALL = "KAW_ALL"):
     plt.title("Magnetisation against temperature")
     plt.ylabel("Magnetisation")
     plt.xlabel("Temperature (K)")
-    plt.plot(KAW_T_arr, KAW_M_arr, color = "coral", label="Glauber")
+    plt.plot(KAW_T_arr, KAW_M_arr, color = "coral", label="Kawasaki")
     plt.plot(GLA_T_arr, GLA_M_arr, "bx", label = "Glauber")
     plt.text(1, 0, "Note that the fit does not approximate \n"
                      "the distribution, it is merely a crude \n"
