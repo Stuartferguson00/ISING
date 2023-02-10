@@ -1,6 +1,8 @@
 # Ising Model Simulation
 
-This repository hold an Ising model simulation of Glauber and Kawisaki dynamics
+This repository hold an Ising model simulation of Glauber and Kawisaki dynamics aswell as example results.
+
+Example results are for a simulation of a (50x50) lattice, with Magnetisation, Energy, Heat capacity and Susceptability measurements every 10 sweeps for 1000 measurements.
 
 # Running Ising simulations
 
@@ -9,8 +11,6 @@ Glauber.py and Kawisaki.py can be called from the commandline, with both requiri
 Visualisation is also optional, chosen through a commandline argument. It is normally switched off during long computation to save time, and can be turned on to qualitatively study behaviour.
 
 Results are saved to respective files "GLA_ALL" for glauber and "KAW_ALL" for Kawasaki, with the form of the document being a seperate column for each temperature evaluated, thus rows are ordered Temperature, Magnetisation, Energy, Heat capacity, Susceptability, error in heat capactity.
-
-
 
 
 
