@@ -18,9 +18,9 @@ To run Kawisaki at T = 1, N = 50, 10000 total sweeps, no animation
 >python3 Kawisaki.py, 1, 50, 10000, False
 
 
-To run Kawisaki at T_low = 1, N = 50, 10000 total sweeps, no animation, T_high = 3 and stepsize = 0.1 (ie a range of Temperatures between 1 and 3 at 0.1 intervals will be evaluated)
+To run Kawisaki at T_low = 1, N = 50, 10000 total sweeps, animation, T_high = 3 and stepsize = 0.1 (ie a range of Temperatures between 1 and 3 at 0.1 intervals will be evaluated)
 
-> python3 Kawisaki.py, 1, 50, 10000, False, 3, 0.1
+> python3 Kawisaki.py, 1, 50, 10000, True, 3, 0.1
 
 
 The same could be done with Glauber.py
