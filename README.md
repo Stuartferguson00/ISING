@@ -12,7 +12,7 @@ Visualisation is also optional, chosen through a commandline argument. It is nor
 
 Results are saved to respective files "GLA_ALL" for glauber and "KAW_ALL" for Kawasaki, with the form of the document being a seperate column for each temperature evaluated, thus rows are ordered Temperature, Magnetisation, Energy, Heat capacity, Susceptability, error in heat capactity.
 
-Example usage from temrinal:
+Example usage from terminal:
 To run Kawisaki at T = 1, N = 50, 10000 total sweeps, no animation
 
 >python3 Kawisaki.py, 1, 50, 10000, False
@@ -35,6 +35,8 @@ To ru  analysis of Glauber and Kawisaki simulation where the results are stored 
 analysis.py can also be called straight from the command line, with the arguments being the filenames of the results (output from Glauber.py and Kawisaki.py)
 It will output graphs detailing how magnetisation, energy, Heat capacity and susceptability vary with temperature in the range 0K to 3K (from the baseline experiment detailed above).
 Simple fits have been employed to estimate the critical temperatures for Magnetisation, energy and heat capacity graphs, with results ranging between 2.25-2.29K as one would expect from literature.
+
+Note that for low quality results (such as few different temperatures assessed or too few sweeps) the fitting algorithm will likely throw an error.
 
 
 
