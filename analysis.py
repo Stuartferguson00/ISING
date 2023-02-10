@@ -231,6 +231,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 3:
         print("Usage:   Glauber_data_filename   Kawasaki_data_filename")
+        print("For further usage instructions, see README or documentation")
         sys.exit(1)
 
 

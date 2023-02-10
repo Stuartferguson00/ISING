@@ -123,9 +123,9 @@ if __name__ == "__main__":
 
     #if incorrect number of arguments are given, state what arguments are expected for which process
     if len(sys.argv) != 7 and len(sys.argv) != 5:
-        print(len(sys.argv))
-        print("Usage for a single T: \n T, N, num_sweeps, plot_anim")
-        print("Usage for a range of T: \n T_low, N, num_sweeps, plot_anim, T_high, stepsize")
+        print("Usage for a single T: \n T (float), N (int), num_sweeps (int), plot_anim (bool)")
+        print("Usage for a range of T: \n T_low (float), N (int), num_sweeps (int), plot_anim (bool), T_high (float), stepsize (int)")
+        print("For further usage instructions, see README or documentation")
         sys.exit(1)
 
     #if only one Temperature is to be evaluated
